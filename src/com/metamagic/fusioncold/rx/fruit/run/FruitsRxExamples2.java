@@ -33,13 +33,14 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Complex Observable Examples with more Operators
  * 
- * @author arafkarsh
- *
+ * @author Araf Karsh Hamid
+ * @version 1.0
+ * @date
  */
 public class FruitsRxExamples2 {
 
 	/**
-	 * RxJava Complex Examples
+	 * Rx.2.Java Complex Examples
 	 * 
 	 * @param args Arguments from the Command line
 	 */

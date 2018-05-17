@@ -41,8 +41,9 @@ import io.reactivex.subscribers.DefaultSubscriber;
  *  Compares between Iterable / Streams / Observable
  *  
  * 
- * @author arafkarsh
- *
+ * @author Araf Karsh Hamid
+ * @version 1.0
+ * @date
  */
 
 public class FruitsRxExample {
