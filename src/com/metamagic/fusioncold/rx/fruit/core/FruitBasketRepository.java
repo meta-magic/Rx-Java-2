@@ -16,14 +16,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
 
- * This program and the accompanying materials are dual-licensed under
- * either the terms of the Eclipse Public License v1.0 as published by
- * the Eclipse Foundation
- 
- *   or (per the licensee's choosing)
- 
- * under the terms of the GNU Lesser General Public License version 2.1
- * as published by the Free Software Foundation.
+ * This program and the accompanying materials are licensed based on Apache 2 License.
 */
 package com.metamagic.fusioncold.rx.fruit.core;
 
@@ -35,10 +28,6 @@ import com.metamagic.fusioncold.rx.fruit.pojos.Fruit;
 import com.metamagic.fusioncold.rx.fruit.pojos.Grapes;
 import com.metamagic.fusioncold.rx.fruit.pojos.Orange;
 
-
-
-
-
 /**
  * Apple Basket is the Data Source / Event Stream 
  * 
@@ -46,10 +35,11 @@ import com.metamagic.fusioncold.rx.fruit.pojos.Orange;
  * Apple Processor Observer will do action on the emitted Apple from
  * the Observable
  * 
- * @author arafkarsh
- *
+ * @author Araf Karsh Hamid
+ * @version 1.0
+ * @date
+ * @param <T>
  */
-
 public class FruitBasketRepository<T extends Fruit> {
 	
 	private ArrayList<Fruit> basket;
