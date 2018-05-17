@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 Araf Karsh Hamid
+ * Copyright (c) 2017 Araf Karsh Hamid
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -16,17 +16,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
 
- * This program and the accompanying materials are dual-licensed under
- * either the terms of the Eclipse Public License v1.0 as published by
- * the Eclipse Foundation
- 
- *   or (per the licensee's choosing)
- 
- * under the terms of the GNU Lesser General Public License version 2.1
- * as published by the Free Software Foundation.
+ * This program and the accompanying materials are licensed based on Apache 2 License.
 */
 package com.metamagic.fusioncold.rx.movies.pojos;
 
+/**
+ * 
+ * 
+ * @author Araf Karsh Hamid
+ * @version 1.0
+ * @date
+ */
 public interface MovieReview extends Comparable<MovieReview> {
 
 	public int id();

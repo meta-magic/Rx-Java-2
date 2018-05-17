@@ -29,7 +29,7 @@ import com.metamagic.fusioncold.rx.movies.core.RecommendationObserver;
 import com.metamagic.fusioncold.rx.movies.pojos.MovieTitle;
 
 /**
- * 
+ * Movie Example using Rx Java 2
  * 
  * @author Araf Karsh Hamid
  * @version 1.0
