@@ -53,7 +53,7 @@ public class RecommendationObserver<T extends MovieTitle>
 	private String pid = "";
 	
 	// Filter Values
-	private int rating = 0;
+	private int rating = 1;
 	
 	/**
 	 * User Movie Suggestion Initialized with Unique ID
@@ -76,7 +76,7 @@ public class RecommendationObserver<T extends MovieTitle>
 		if(_rating > 0) {
 			rating = _rating;
 		}
-		System.out.println("Rx.2.Java|Observer> User Suggestion (Observer) Initialized with ID = "+pid);
+		System.out.println("Rx.2.Java|Observer> User Suggestion (Observer) Initialized with ID = "+pid+" Rating="+rating);
 	}
 
 	

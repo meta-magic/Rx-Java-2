@@ -65,7 +65,7 @@ public class MovieExample {
 		} catch (Exception e) {
 		}
 
-		int rating = 6;
+		int rating = 8;
 		int take = 5;
 		System.out.println("\nRx.2.Java> Starting Testing U2 - Observable with Filter and Take");
 		System.out.println("Rx.2.Java> User Suggestions Rating > "+rating+" Suggest "+take+" Movies");
@@ -76,7 +76,7 @@ public class MovieExample {
 		} catch (Exception e) {
 		}
 		
-		rating = 8;
+		rating = 6;
 		take = 9;
 		System.out.println("\nRx.2.Java> Starting Testing U3 - Flowable with Backpressure strategy = BUFFER");
 		System.out.println("Rx.2.Java> User Suggestions Rating > "+rating+" Suggest "+take+" Movies");
@@ -99,7 +99,7 @@ public class MovieExample {
 		Observable<MovieTitle> movies = createRecommendationObservable();
 		
 		movies
-			.take(20)
+			.take(21)
 			.observeOn(Schedulers.computation())
 			.subscribeOn(Schedulers.computation())
 			.subscribe(
