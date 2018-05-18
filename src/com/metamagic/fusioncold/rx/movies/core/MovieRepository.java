@@ -42,75 +42,25 @@ import com.metamagic.fusioncold.rx.movies.pojos.MovieTitle;
  */
 public class MovieRepository<T extends MovieTitle> {
 	
-	private ArrayList<MovieTitle> movies;
-	
-	public final static int MAX_ACTION_MOVIES 	= 200;
-	public final static int MAX_DRAMA_MOVIES 	= 140;
-	public final static int MAX_ROMANTIC_MOVIES 	= 90;
-	public final static int MAX_SCIFI_MOVIES 	= 50;
+	private final ArrayList<MovieTitle> movies;
 	
 	/**
-	 * Initialize the Repository
-	 */
-	public MovieRepository() {
-		movies = new ArrayList<MovieTitle>();
-	}
-
-	/**
-	 * Creates Action Movies
+	 * Constructor to be used by MovieFactory
 	 * 
-	 * @param _limit Limit the no: of Actions Movies from the database
-	 * @return MovieRepository Returns the Movie Repository supporting the Fluent API paradigm
+	 * @param _movies
 	 */
-	public MovieRepository<T> createMovieAction(int _limit) {
-		movies.clear();
-		for(int x=1; x<=_limit; x++) {
-			movies.add(new MovieAction(x));
-		}
-		return this;
+	protected MovieRepository(ArrayList<MovieTitle> _movies) {
+		movies = (_movies != null) ? _movies : new ArrayList<MovieTitle>();
 	}
 	
 	/**
-	 * Creates Drama Movies
-	 * 
-	 * @param _limit Limit the no: of Drama Movies from the database
-	 * @return MovieRepository Returns the Movie Repository supporting the Fluent API paradigm
+	 * Returns a Random Movie from the Database
+	 * @return
 	 */
-	public MovieRepository<T> createMovieDrama(int _limit) {
-		movies.clear();
-		for(int x=1; x<=_limit; x++) {
-			movies.add(new MovieDrama(x));
-		}
-		return this;
+	public MovieTitle getRandomMovie() {
+		return movies.get((int) (Math.random() * (movies.size() - 1)));
 	}
 	
-	/**
-	 * Creates SciFi Movies
-	 * 
-	 * @param _limit Limit the no: of Sci-Fi Movies from the database
-	 * @return MovieRepository Returns the Movie Repository supporting the Fluent API paradigm
-	 */
-	public MovieRepository<T> createMovieSciFi(int _limit) {
-		movies.clear();
-		for(int x=1; x<=_limit; x++) {
-			movies.add(new MovieSciFi(x));
-		}
-		return this;
-	}
-	
-	/**
-	 * Creates Romantic Movies
-	 * 
-	 * @param _limit Limit the no: of Romantic Movies from the database
-	 * @return MovieRepository Returns the Movie Repository supporting the Fluent API paradigm
-	 */
-	public MovieRepository<T> createMovieRomantic(int _limit) {
-		movies.clear();
-		for(int x=1; x<=_limit; x++) {
-			movies.add(new MovieRomantic(x));
-		}
-		return this;
-	}
 	
 	/**
 	 * Returns Movie Collection

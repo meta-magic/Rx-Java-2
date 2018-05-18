@@ -42,25 +42,25 @@ import com.metamagic.fusioncold.rx.movies.pojos.MovieTitle;
  */
 public class RecommendationEngineObservable {
 	
-	private static MovieRepository<MovieAction> actionMovies;
-	private static MovieRepository<MovieDrama> dramaMovies;
-	private static MovieRepository<MovieRomantic> romanticMovies;
-	private static MovieRepository<MovieSciFi> sciFiMovies;
+	private MovieRepository<MovieAction> actionMovies;
+	private MovieRepository<MovieDrama> dramaMovies;
+	private MovieRepository<MovieRomantic> romanticMovies;
+	private MovieRepository<MovieSciFi> sciFiMovies;
 	
-	private static ArrayList<MovieTitle> suggestedMovies;
-	private static boolean initialized = false;
+	private ArrayList<MovieTitle> suggestedMovies;
+	
+	public RecommendationEngineObservable() {
+	}
 	
 	/**
 	 * Initialize the Factory with Simulated Data
 	 */
-	public static void initialize() {
-		if(!initialized) {
+	public  RecommendationEngineObservable initialize() {
 			getActionMovies();
 			getDramaMovies();
 			getRomanticMovies();
 			getSciFiMovies();
-			initialized = true;
-		}
+		return this;
 	}
 	
 	/**
@@ -68,8 +68,8 @@ public class RecommendationEngineObservable {
 	 * 
 	 * @return MovieRepository Returns the Movie Repository
 	 */
-	private static MovieRepository<MovieAction> getActionMovies() {
-		return getActionMovies(MovieRepository.MAX_ACTION_MOVIES);
+	private MovieRepository<MovieAction> getActionMovies() {
+		return getActionMovies(MovieFactory.MAX_ACTION_MOVIES);
 	}
 	
 	/**
@@ -78,10 +78,10 @@ public class RecommendationEngineObservable {
 	 * @param _limit Limit the no: of Action Movies
 	 * @return MovieRepository Returns the Movie Repository
 	 */
-	private static MovieRepository<MovieAction> getActionMovies(int _limit) {
+	private MovieRepository<MovieAction> getActionMovies(int _limit) {
 		_limit = checkLimit(_limit);
 		if(actionMovies == null) {
-			actionMovies = new MovieRepository<MovieAction>().createMovieAction(_limit);
+			actionMovies = new MovieFactory().createMovieAction(_limit);
 		}
 		return actionMovies;
 	}
@@ -91,8 +91,8 @@ public class RecommendationEngineObservable {
 	 * 
 	 * @return MovieRepository Returns the Movie Repository
 	 */
-	private static MovieRepository<MovieDrama> getDramaMovies() {
-		return getDramaMovies(MovieRepository.MAX_DRAMA_MOVIES);
+	private MovieRepository<MovieDrama> getDramaMovies() {
+		return getDramaMovies(MovieFactory.MAX_DRAMA_MOVIES);
 	}
 	
 	/**
@@ -101,10 +101,10 @@ public class RecommendationEngineObservable {
 	 * @param _limit Limit the no: of Drama Movies
 	 * @return MovieRepository Returns the Movie Repository
 	 */
-	private static MovieRepository<MovieDrama> getDramaMovies(int _limit) {
+	private MovieRepository<MovieDrama> getDramaMovies(int _limit) {
 		_limit = checkLimit(_limit);
 		if(dramaMovies == null) {
-			dramaMovies = new MovieRepository<MovieDrama>().createMovieDrama(_limit);
+			dramaMovies = new MovieFactory().createMovieDrama(_limit);
 		}
 		return dramaMovies;
 	}
@@ -114,8 +114,8 @@ public class RecommendationEngineObservable {
 	 * 
 	 * @return MovieRepository Returns the Movie Repository
 	 */
-	private static MovieRepository<MovieRomantic> getRomanticMovies() {
-		return getRomanticMovies(MovieRepository.MAX_ROMANTIC_MOVIES);
+	private MovieRepository<MovieRomantic> getRomanticMovies() {
+		return getRomanticMovies(MovieFactory.MAX_ROMANTIC_MOVIES);
 	}
 	
 	/**
@@ -124,10 +124,10 @@ public class RecommendationEngineObservable {
 	 * @param _limit Limit the no: of Romantic Movies
 	 * @return MovieRepository Returns the Movie Repository
 	 */
-	private static MovieRepository<MovieRomantic> getRomanticMovies(int _limit) {
+	private MovieRepository<MovieRomantic> getRomanticMovies(int _limit) {
 		_limit = checkLimit(_limit);
 		if(romanticMovies == null) {
-			romanticMovies = new MovieRepository<MovieRomantic>().createMovieRomantic(_limit);
+			romanticMovies = new MovieFactory().createMovieRomantic(_limit);
 		}
 		return romanticMovies;
 	}
@@ -136,8 +136,8 @@ public class RecommendationEngineObservable {
 	 * Retrieve SciFi Movies
 	 * @return MovieRepository Returns the Movie Repository
 	 */
-	private static MovieRepository<MovieSciFi> getSciFiMovies() {
-		return getSciFiMovies(MovieRepository.MAX_SCIFI_MOVIES);
+	private MovieRepository<MovieSciFi> getSciFiMovies() {
+		return getSciFiMovies(MovieFactory.MAX_SCIFI_MOVIES);
 	}
 	
 	/**
@@ -146,10 +146,10 @@ public class RecommendationEngineObservable {
 	 * @param _limit Limit the no: of Sci-Fi Movies
 	 * @return MovieRepository Returns the Movie Repository
 	 */
-	private static MovieRepository<MovieSciFi> getSciFiMovies(int _limit) {
+	private MovieRepository<MovieSciFi> getSciFiMovies(int _limit) {
 		_limit = checkLimit(_limit);
 		if(sciFiMovies == null) {
-			sciFiMovies = new MovieRepository<MovieSciFi>().createMovieSciFi(_limit);
+			sciFiMovies = new MovieFactory().createMovieSciFi(_limit);
 		}
 		return sciFiMovies;
 	}
@@ -165,60 +165,34 @@ public class RecommendationEngineObservable {
 	}
 	
 	/**
+	 * Find Movies from the Movie Database
+	 * 
+	 * @return
+	 */
+	private ArrayList<MovieTitle> findMovies() {
+		return findMovies(1);
+	}
+	
+	/**
 	 * Find Movies from Movie Database
 	 * 
 	 * @return ArrayList Returns a list movies from various categories
 	 */
-	private static ArrayList<MovieTitle> findMovies() {
+	private ArrayList<MovieTitle> findMovies(int _multiplier) {
 		if(suggestedMovies == null) {
 			suggestedMovies = new ArrayList<MovieTitle>();
-			int totalMovies = (int) (Math.random() * (15 + 1));
+			int totalMovies = (int) (Math.random() * (15 + 1)) * _multiplier;
 			if(totalMovies < 5) {
 				totalMovies = 5;
 			}
 			for(int x=0; x<totalMovies; x++) {
-				int flavour = (int) (Math.random() * (4 + 1));
-				suggestedMovies.add(getMovie(flavour));
+				suggestedMovies.add(actionMovies.getRandomMovie());
+				suggestedMovies.add(dramaMovies.getRandomMovie());
+				suggestedMovies.add(romanticMovies.getRandomMovie());
+				suggestedMovies.add(sciFiMovies.getRandomMovie());
 			}
 		}
 		return suggestedMovies;
-	}
-	
-	/**
-	 * Pick Movies based on Movie Flavor (Action, Drama, SciFi etc)
-	 * 
-	 * @param _flavour Movie flavour like Action, Drama, Sci-Fi etc
-	 * @return MovieTitle Returns the Movie Title
-	 */
-	private static MovieTitle getMovie(int _flavour) {
-		MovieTitle movie = null;
-		switch (_flavour) {
-		case		1:	
-			movie = actionMovies
-					.list()
-					.get((int) (Math.random() * (MovieRepository.MAX_ACTION_MOVIES - 1)));
-			break;
-		case	 	2:
-			movie = dramaMovies
-					.list()
-					.get((int) (Math.random() * (MovieRepository.MAX_DRAMA_MOVIES - 1)));
-			break;
-		case		3:
-			movie = romanticMovies
-					.list()
-					.get((int) (Math.random() * (MovieRepository.MAX_ROMANTIC_MOVIES - 1)));
-			break;
-		case 	4:
-			movie = sciFiMovies
-					.list()
-					.get((int) (Math.random() * (MovieRepository.MAX_SCIFI_MOVIES - 1)));
-			break;
-		default:
-			movie = sciFiMovies
-					.list()
-					.get((int) (Math.random() * (MovieRepository.MAX_SCIFI_MOVIES - 1)));			
-		}
-		return movie;
 	}
 	
 	/**
@@ -226,11 +200,21 @@ public class RecommendationEngineObservable {
 	 * 
 	 * @return Observable Returns the Movie Observable
 	 */
-	public static Observable<MovieTitle> createMovieObservable () {
+	public Observable<MovieTitle> createMovieObservable() {
+		return createMovieObservable(5);
+	}
+	
+	/**
+	 * Returns Movie Observable
+	 * 
+	 * @return Observable Returns the Movie Observable
+	 */
+	public Observable<MovieTitle> createMovieObservable (int _multiplier) {
 
 		// Movie Repository Call
-		final ArrayList<MovieTitle> movies = findMovies();
+		final ArrayList<MovieTitle> movies = findMovies(_multiplier);
 		
+		// Create Observable
 		Observable<MovieTitle> obs = Observable.create(
 								new ObservableOnSubscribe<MovieTitle>() {
 									
@@ -253,5 +237,40 @@ public class RecommendationEngineObservable {
 
 		 } );
 		return obs;
+	}
+	
+	/**
+	 * Returns a Flowable<NovieTitle> with Backpressure Strategy as Buffer.
+	 * 
+	 * There are 5 Backpressure Strategies
+	 * 
+	 * 1. BUFFER
+	 * 		The source will buffer all the events until the subscriber can consume them.
+	 * 
+	 * 2. DROP
+	 * 		Is used to discard the events that cannot be consumed instead of buffering them. 
+	 * 		
+	 * 3. LATEST
+	 * 		Will force the source to keep only the latest events, thus overwriting any previous 
+	 * 		values if the consumer can’t keep up.
+	 * 
+	 * 4. ERROR
+	 * 		Here the assumption is that we don’t expect backpressure to occur. Consequently, 
+	 * 		a MissingBackpressureException should be thrown if the consumer can’t keep up with 
+	 * 		the source.
+	 * 
+	 * 5. MISSING
+	 * 		The source will push elements without discarding or buffering.
+	 * 
+	 * @return
+	 */
+	public Flowable<MovieTitle> createMovieFlowable () {
+
+		// Movie Repository Call
+		final ArrayList<MovieTitle> movies = findMovies();
+		
+		// Create Flowable
+		Flowable<MovieTitle> flowable = createMovieObservable(15).toFlowable(BackpressureStrategy.BUFFER);
+		return flowable;
 	}
 }

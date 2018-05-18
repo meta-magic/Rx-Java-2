@@ -37,32 +37,53 @@ import com.metamagic.fusioncold.rx.movies.pojos.MovieTitle;
  */
 public class MovieExample {
 
+	private RecommendationEngineObservable recommEngine;
+	
+	/**
+	 * Movie Example
+	 */
+	public MovieExample() {
+		recommEngine = new RecommendationEngineObservable();
+		recommEngine.initialize();
+	}
 	/**
 	 * 
 	 * @param args Command line arguments
 	 */
 	public static void main(String[] args) {
+		
 		MovieExample movie = new MovieExample();
 		
 		System.out.println("\nRx.2.Java> Starting Movies Async Test Suite...................");
 		System.out.println("Movie Codes > AC=Action, SF=SciFi, DR=Drama, RO=Romantic");
 		
-		System.out.println("\nRx.2.Java> Starting Testing U1..................");
+		System.out.println("\nRx.2.Java> Starting Testing U1 - Observable Take(20) .....");
 		movie.movieRecommendations();
 		System.out.println("Rx.2.Java> Tests Scheduled for U1...............");
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(30000);
 		} catch (Exception e) {
 		}
 
 		int rating = 6;
 		int take = 5;
-		System.out.println("\nRx.2.Java> Starting Testing U2..................");
+		System.out.println("\nRx.2.Java> Starting Testing U2 - Observable with Filter and Take");
 		System.out.println("Rx.2.Java> User Suggestions Rating > "+rating+" Suggest "+take+" Movies");
 		movie.filterSortFlatMap(rating, take);
 		System.out.println("Rx.2.Java> Tests Scheduled for U2...............");
 		try {
-			Thread.sleep(15000);
+			Thread.sleep(30000);
+		} catch (Exception e) {
+		}
+		
+		rating = 7;
+		take = 7;
+		System.out.println("\nRx.2.Java> Starting Testing U3 - Flowable with Backpressure strategy = BUFFER");
+		System.out.println("Rx.2.Java> User Suggestions Rating > "+rating+" Suggest "+take+" Movies");
+		movie.filterSortFlatMapFlowable(rating, take);
+		System.out.println("Rx.2.Java> Tests Scheduled for U3...............");
+		try {
+			Thread.sleep(30000);
 		} catch (Exception e) {
 		}
 		System.out.println("\nRx.2.Java> Movies Async Test Suite Complete..........");
@@ -73,11 +94,12 @@ public class MovieExample {
 	 */
 	public void movieRecommendations() {
 		RecommendationObserver<MovieTitle> 
-					user = createRecommendationObserver("U1", 5);
+					user = createRecommendationObserver("U1", 3);
 		
 		Observable<MovieTitle> movies = createRecommendationObservable();
 		
 		movies
+			.take(20)
 			.observeOn(Schedulers.computation())
 			.subscribeOn(Schedulers.computation())
 			.subscribe(
@@ -115,6 +137,26 @@ public class MovieExample {
 			);
 	}
 	
+	public <T> void filterSortFlatMapFlowable(int _rating, int _take) {
+		RecommendationObserver<MovieTitle> 
+					user = createRecommendationObserver("U3", _rating);
+		
+		Flowable<MovieTitle> movies = createRecommendationFlowable();
+		
+		movies
+			.filter(user.ratingFilter())
+			.toSortedList()
+			.flatMapObservable(list -> Observable.fromIterable(list)) 
+			.take(_take)
+			.observeOn(Schedulers.computation())
+			.subscribeOn(Schedulers.computation())
+			.subscribe(
+					movie -> user.onNext(movie),
+					throwable -> user.onError(throwable),
+					() -> user.onComplete()
+			);
+	}
+	
 	/**
 	 * Returns Recommendation Observer
 	 * 
@@ -131,7 +173,15 @@ public class MovieExample {
 	 * @return
 	 */
 	private Observable<MovieTitle> createRecommendationObservable() {
-		RecommendationEngineObservable.initialize();
-		return RecommendationEngineObservable.createMovieObservable();
+		return recommEngine.createMovieObservable();
+	}
+	
+	/**
+	 * Returns Movie Flowable with Backpressure Strategy as BUFFER.
+	 * 
+	 * @return
+	 */
+	private Flowable<MovieTitle> createRecommendationFlowable() {
+		return recommEngine.createMovieFlowable();
 	}
 }
