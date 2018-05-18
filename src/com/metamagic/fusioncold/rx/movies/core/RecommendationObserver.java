@@ -76,7 +76,7 @@ public class RecommendationObserver<T extends MovieTitle>
 		if(_rating > 0) {
 			rating = _rating;
 		}
-		System.out.println("Rx.2.Java> User Suggestion (Observer) Initialized with ID = "+pid);
+		System.out.println("Rx.2.Java|Observer> User Suggestion (Observer) Initialized with ID = "+pid);
 	}
 
 	
@@ -91,15 +91,27 @@ public class RecommendationObserver<T extends MovieTitle>
 			startTime = System.currentTimeMillis();
 			start = false;
 		}
-		try {
-			// Simulating Latency
-			processMovie(_movieTitle);
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		// Process the movie
+		processMovie(_movieTitle);
 	}
 	
+	/**
+	 * Process the movie - it takes half a second to process the movie title.
+	 * 
+	 * @param _movieTitle Observable calls this method to Process the movie
+	 */
+	private void processMovie(final MovieTitle _movieTitle) {
+		counter++;
+		if(counter > 3) {
+			counter = 1;
+			System.out.println("");
+		}
+		System.err.print("["+pid+"]="+_movieTitle.getMovieTag()+" ");
+		// Simulating Latency
+		try { Thread.sleep(500); } 
+		catch (InterruptedException e) {	e.printStackTrace(); }
+	}
+
 	/**
 	 * Inform the Movie Observer if the Processing is done.
 	 */
@@ -119,7 +131,7 @@ public class RecommendationObserver<T extends MovieTitle>
 	 */
 	@Override
 	public void onError(Throwable t) {
-		System.err.println("\nRx.2.Java-"+pid+"> User Movie Suggestion : Whoops Error!! = "+t.getMessage());
+		System.err.println("\nRx.2.Java-"+pid+"|Observer> User Movie Suggestion : Whoops Error!! = "+t.getMessage());
 	}
 
 	/**
@@ -140,20 +152,6 @@ public class RecommendationObserver<T extends MovieTitle>
 	 */
 	public Predicate<T> ratingFilter() {
 		return this;
-	}
-	
-	/**
-	 * Process the movie
-	 * 
-	 * @param _movieTitle Observable calls this method to Process the movie
-	 */
-	private void processMovie(final MovieTitle _movieTitle) {
-		counter++;
-		if(counter > 3) {
-			counter = 1;
-			System.out.println("");
-		}
-		System.err.print("["+pid+"]="+_movieTitle.getMovieTag()+" ");
 	}
 
 	@Override

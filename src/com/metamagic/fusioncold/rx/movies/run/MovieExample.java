@@ -76,8 +76,8 @@ public class MovieExample {
 		} catch (Exception e) {
 		}
 		
-		rating = 7;
-		take = 7;
+		rating = 8;
+		take = 9;
 		System.out.println("\nRx.2.Java> Starting Testing U3 - Flowable with Backpressure strategy = BUFFER");
 		System.out.println("Rx.2.Java> User Suggestions Rating > "+rating+" Suggest "+take+" Movies");
 		movie.filterSortFlatMapFlowable(rating, take);
@@ -137,6 +137,32 @@ public class MovieExample {
 			);
 	}
 	
+	/**
+	 * Flowable<NovieTitle> with Backpressure Strategy as Buffer.
+	 * 
+	 * There are 5 Backpressure Strategies
+	 * 
+	 * 1. BUFFER
+	 * 		The source will buffer all the events until the subscriber can consume them.
+	 * 
+	 * 2. DROP
+	 * 		Is used to discard the events that cannot be consumed instead of buffering them. 
+	 * 		
+	 * 3. LATEST
+	 * 		Will force the source to keep only the latest events, thus overwriting any previous 
+	 * 		values if the consumer can’t keep up.
+	 * 
+	 * 4. ERROR
+	 * 		Here the assumption is that we don’t expect backpressure to occur. Consequently, 
+	 * 		a MissingBackpressureException should be thrown if the consumer can’t keep up with 
+	 * 		the source.
+	 * 
+	 * 5. MISSING
+	 * 		The source will push elements without discarding or buffering.
+	 * 
+	 * @param _rating
+	 * @param _take
+	 */
 	public <T> void filterSortFlatMapFlowable(int _rating, int _take) {
 		RecommendationObserver<MovieTitle> 
 					user = createRecommendationObserver("U3", _rating);
