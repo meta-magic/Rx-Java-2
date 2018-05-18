@@ -33,6 +33,20 @@ public abstract class AbstractMovie implements MovieTitle {
 	private int year = 1970;
 	private String[] actors = {"Actor.1", "Actor.2" };
 	
+	private final String movieType;
+	private final int movieId;
+	
+	/**
+	 * Set the basic movie Type and Id
+	 * 
+	 * @param _id
+	 * @param _type
+	 */
+	public AbstractMovie(int _id, String _type) {
+		movieId = _id;
+		movieType = _type;
+	}
+	
 	/**
 	 * Calculates the Movie Rating
 	 * 
@@ -47,6 +61,13 @@ public abstract class AbstractMovie implements MovieTitle {
 		year += (rating / 4);
 		rating = rating / 10;
 		return rating;
+	}
+	
+	/**
+	 * Returns the Movie ID
+	 */
+	public int id() {
+		return movieId;
 	}
 
 	/**
@@ -81,6 +102,38 @@ public abstract class AbstractMovie implements MovieTitle {
 	public int compareTo(MovieTitle _movie) {
 		return Double.compare(_movie.rating(), this.rating);
 	}
+	
+	/**
+	 * HashCode Method. Returns ID
+	 * 
+	 * @return int
+	 */
+	public int hashCode() {
+		return movieId;
+	}
+	
+	/**
+	 * To String Method. Prints ID
+	 * 
+	 * @return String
+	 */
+	public String toString() {
+		return (movieId <10) ? movieType+":00"+movieId : 
+			((movieId <100) ? movieType+":0"+movieId : movieType+":"+movieId);
+	}
+	
+	/**
+	 * Equals Method
+	 */
+	public boolean equals(Object o) {
+		try {
+			AbstractMovie a = (AbstractMovie)o;
+			if(movieId == a.movieId) {
+				return true;
+			}
+		} catch (Exception e) {}
+		return false;
+	}
 	/**
 	 * Returns the Movie Tag
 	 * 
@@ -88,9 +141,10 @@ public abstract class AbstractMovie implements MovieTitle {
 	 */
 	public String getMovieTag() {
 		StringBuilder d = new StringBuilder();
-		d.append(this).append(" [");
-		d.append(year()).append(":");
-		d.append(rating()).append("]");
+		d.append("{");
+		d.append(this).append(",Year:");
+		d.append(year()).append(",Rating:");
+		d.append(rating()).append("}");
 		return d.toString();
 	}
 }

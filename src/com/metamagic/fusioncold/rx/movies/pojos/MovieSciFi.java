@@ -28,25 +28,16 @@ package com.metamagic.fusioncold.rx.movies.pojos;
  * @date
  */
 public class MovieSciFi extends AbstractMovie {
-
-	private final int id;
 	
 	/**
 	 * SciFi Movie : Base = 28
 	 * @param _id Unique ID for the Action Movie
 	 */
 	public MovieSciFi(int _id) {
-		id = _id;
+		super(_id, "SF");
 		calculateRating(28);
 	}
-	
-	/**
-	 * String Movie ID
-	 * @return String
-	 */
-	public int id() {
-		return id;
-	}
+
 	@Override
 	public String title() {
 		return "Movie Title.1";
@@ -61,37 +52,4 @@ public class MovieSciFi extends AbstractMovie {
 	public String writer() {
 		return "Movie Writer";
 	}
-	
-	/**
-	 * HashCode Method. Returns ID
-	 * 
-	 * @return int
-	 */
-	public int hashCode() {
-		return id;
-	}
-	
-	/**
-	 * To String Method. Prints ID
-	 * 
-	 * @return String
-	 */
-	public String toString() {
-		return (id <10) ? "SF:0"+id : "SF:"+id;
-	}
-
-	/**
-	 * Equals Method
-	 */
-	public boolean equals(Object o) {
-		try {
-			MovieSciFi a = (MovieSciFi)o;
-			if(id == a.id) {
-				return true;
-			}
-		} catch (Exception e) {}
-		return false;
-	}
-
-
 }

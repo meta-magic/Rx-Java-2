@@ -28,25 +28,16 @@ package com.metamagic.fusioncold.rx.movies.pojos;
  * @date
  */
 public class MovieAction extends AbstractMovie {
-
-	private final int id;
 	
 	/**
 	 * Action Movie : Base = 25
 	 * @param _id Unique ID for the Action Movie
 	 */
 	public MovieAction(int _id) {
-		id = _id;
+		super(_id, "AC");
 		calculateRating(25);
 	}
-	
-	/**
-	 * String Movie ID
-	 * @return String
-	 */
-	public int id() {
-		return id;
-	}
+
 	@Override
 	public String title() {
 		return "Movie Title.1";
@@ -60,36 +51,5 @@ public class MovieAction extends AbstractMovie {
 	@Override
 	public String writer() {
 		return "Movie Writer";
-	}
-	
-	/**
-	 * HashCode Method. Returns ID
-	 * 
-	 * @return int
-	 */
-	public int hashCode() {
-		return id;
-	}
-	
-	/**
-	 * To String Method. Prints ID
-	 * 
-	 * @return String
-	 */
-	public String toString() {
-		return (id <10) ? "AC:0"+id : "AC:"+id;
-	}
-
-	/**
-	 * Equals Method
-	 */
-	public boolean equals(Object o) {
-		try {
-			MovieAction a = (MovieAction)o;
-			if(id == a.id) {
-				return true;
-			}
-		} catch (Exception e) {}
-		return false;
 	}
 }

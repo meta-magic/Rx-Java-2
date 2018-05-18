@@ -65,8 +65,6 @@ public class MovieExample {
 			Thread.sleep(15000);
 		} catch (Exception e) {
 		}
-
-		
 		System.out.println("\nRx.2.Java> Movies Async Test Suite Complete..........");
 	}
 
@@ -75,8 +73,9 @@ public class MovieExample {
 	 */
 	public void movieRecommendations() {
 		RecommendationObserver<MovieTitle> 
-					user = recommendationObserver("U1", 5);
-		Observable<MovieTitle> movies = recommendationObservable();
+					user = createRecommendationObserver("U1", 5);
+		
+		Observable<MovieTitle> movies = createRecommendationObservable();
 		
 		movies
 			.observeOn(Schedulers.computation())
@@ -98,8 +97,9 @@ public class MovieExample {
 	 */
 	public <T> void filterSortFlatMap(int _rating, int _take) {
 		RecommendationObserver<MovieTitle> 
-					user = recommendationObserver("U2", _rating);
-		Observable<MovieTitle> movies = recommendationObservable();
+					user = createRecommendationObserver("U2", _rating);
+		
+		Observable<MovieTitle> movies = createRecommendationObservable();
 		
 		movies
 			.filter(user.ratingFilter())
@@ -112,10 +112,17 @@ public class MovieExample {
 					movie -> user.onNext(movie),
 					throwable -> user.onError(throwable),
 					() -> user.onComplete()
-				);
+			);
 	}
 	
-	private RecommendationObserver<MovieTitle> recommendationObserver(String _id, Integer _rating) {
+	/**
+	 * Returns Recommendation Observer
+	 * 
+	 * @param _id
+	 * @param _rating
+	 * @return
+	 */
+	private RecommendationObserver<MovieTitle> createRecommendationObserver(String _id, Integer _rating) {
 		return new RecommendationObserver<MovieTitle>(_id, _rating);
 	}	
 	
@@ -123,7 +130,7 @@ public class MovieExample {
 	 * Returns Movie Observable
 	 * @return
 	 */
-	private Observable<MovieTitle> recommendationObservable() {
+	private Observable<MovieTitle> createRecommendationObservable() {
 		RecommendationEngineObservable.initialize();
 		return RecommendationEngineObservable.createMovieObservable();
 	}

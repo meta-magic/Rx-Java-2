@@ -42,81 +42,6 @@ import com.metamagic.fusioncold.rx.movies.pojos.MovieTitle;
 public class RecommendationObserver<T extends MovieTitle> 
 	extends DefaultSubscriber<MovieTitle> implements Predicate<T>, Observer<MovieTitle> {
 
-	/**
-	 * on Next is called by Observable to Process the Movie
-	 * 
-	 * @param _movieTitle Process the Movie Title
-	 */
-	@Override
-	public void onNext(MovieTitle _movieTitle) {
-		if(start) {
-			startTime = System.currentTimeMillis();
-			start = false;
-		}
-		try {
-			// Simulating Latency
-			processMovie(_movieTitle);
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Inform the Movie Observer if the Processing is done.
-	 */
-	@Override
-	public void onComplete() {
-		endTime = System.currentTimeMillis();
-		totalTime = endTime - startTime;
-		double seconds = totalTime / 1000;
-		System.out.println("\nRxJava-"+pid+"> User Movie Suggestion Task Completed - Total Time in Seconds = "+seconds);
-		start = true;
-	}
-
-	/**
-	 * Throws the error while processing the movie
-	 * 
-	 * @param t Error while processing the movie
-	 */
-	@Override
-	public void onError(Throwable t) {
-		System.err.println("\nRxJava-"+pid+"> User Movie Suggestion : Whoops Error!! = "+t.getMessage());
-	}
-
-	/**
-	 * Returns true if the Movie Rating is greater
-	 * 
-	 * @param _movieTitle Check the movie rating
-	 * @return Boolean Returns true if the Movie Rating is greater
-	 */
-	@Override
-	public boolean test(T _movieTitle) {
-		return (_movieTitle.rating() > rating);
-	}
-	
-	/**
-	 * Returns the Movie Rating Filter
-	 * 
-	 * @return Func1 Returns the Movie Rating Filter
-	 */
-	public Predicate<T> ratingFilter() {
-		return this;
-	}
-	
-	/**
-	 * Process the movie
-	 * 
-	 * @param _movieTitle Observable calls this method to Process the movie
-	 */
-	private void processMovie(final MovieTitle _movieTitle) {
-		counter++;
-		if(counter > 3) {
-			counter = 1;
-			System.out.println("");
-		}
-		System.err.print("["+pid+"]="+_movieTitle.getMovieTag()+" ");
-	}
 	private boolean start = true;
 	
 	private long startTime = 0;
@@ -151,7 +76,84 @@ public class RecommendationObserver<T extends MovieTitle>
 		if(_rating > 0) {
 			rating = _rating;
 		}
-		System.out.println("RxJava> User Suggestion (Observer) Initialized with ID = "+pid);
+		System.out.println("Rx.2.Java> User Suggestion (Observer) Initialized with ID = "+pid);
+	}
+
+	
+	/**
+	 * on Next is called by Observable to Process the Movie
+	 * 
+	 * @param _movieTitle Process the Movie Title
+	 */
+	@Override
+	public void onNext(MovieTitle _movieTitle) {
+		if(start) {
+			startTime = System.currentTimeMillis();
+			start = false;
+		}
+		try {
+			// Simulating Latency
+			processMovie(_movieTitle);
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Inform the Movie Observer if the Processing is done.
+	 */
+	@Override
+	public void onComplete() {
+		endTime = System.currentTimeMillis();
+		totalTime = endTime - startTime;
+		double seconds = totalTime / 1000;
+		System.out.println("\nRx.2.Java-"+pid+"|Observer> User Movie Suggestion Task Completed - Total Time in Seconds = "+seconds);
+		start = true;
+	}
+
+	/**
+	 * Throws the error while processing the movie
+	 * 
+	 * @param t Error while processing the movie
+	 */
+	@Override
+	public void onError(Throwable t) {
+		System.err.println("\nRx.2.Java-"+pid+"> User Movie Suggestion : Whoops Error!! = "+t.getMessage());
+	}
+
+	/**
+	 * Returns true if the Movie Rating is greater
+	 * 
+	 * @param _movieTitle Check the movie rating
+	 * @return Boolean Returns true if the Movie Rating is greater
+	 */
+	@Override
+	public boolean test(T _movieTitle) {
+		return (_movieTitle.rating() > rating);
+	}
+	
+	/**
+	 * Returns the Movie Rating Filter
+	 * 
+	 * @return Func1 Returns the Movie Rating Filter
+	 */
+	public Predicate<T> ratingFilter() {
+		return this;
+	}
+	
+	/**
+	 * Process the movie
+	 * 
+	 * @param _movieTitle Observable calls this method to Process the movie
+	 */
+	private void processMovie(final MovieTitle _movieTitle) {
+		counter++;
+		if(counter > 3) {
+			counter = 1;
+			System.out.println("");
+		}
+		System.err.print("["+pid+"]="+_movieTitle.getMovieTag()+" ");
 	}
 
 	@Override

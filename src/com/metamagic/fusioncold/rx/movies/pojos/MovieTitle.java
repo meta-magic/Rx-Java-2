@@ -29,19 +29,51 @@ package com.metamagic.fusioncold.rx.movies.pojos;
  */
 public interface MovieTitle extends Comparable<MovieTitle> {
 
+	/**
+	 * Returns Unique Movie ID
+	 * @return
+	 */
 	public int id();
 	
+	/**
+	 * Returns Movie Title
+	 * @return
+	 */
 	public String title();
 	
+	/**
+	 * Returns Movie Rating
+	 * @return
+	 */
 	public double rating();
 	
+	/**
+	 * Returns Movie released Year.
+	 * @return
+	 */
 	public int year();
 	
+	/**
+	 * Returns Movie Director
+	 * @return
+	 */
 	public String director();
 	
+	/**
+	 * Returns Movie Actors
+	 * @return
+	 */
 	public String[] actors();
 	
+	/**
+	 * Returns Movie Script Writer
+	 * @return
+	 */
 	public String writer();
 	
+	/**
+	 * Returns Movie Type, ID, Rating and Release year
+	 * @return
+	 */
 	public String getMovieTag();
 }
